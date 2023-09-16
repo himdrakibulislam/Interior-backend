@@ -13,13 +13,12 @@ exports.getProjects = async (req, res, next) => {
     // console.log(req.ip)
     const result = await getProjectsServices();
     res.status(200).json({
-      status: "Success",
+      message: "success",
       data: result,
     });
   } catch (error) {
-    console.log(error);
     res.status(400).json({
-      status: "Failed",
+      message: "error",
       error,
     });
   }
@@ -42,13 +41,13 @@ exports.createProject = async (req, res, next) => {
     const result = await createProjectService(storeProject);
 
     res.status(200).json({
-      status: "Success",
+      message: "success",
       data: result,
     });
   } catch (error) {
-    console.log(error);
+    
     res.status(400).json({
-      status: "Failed",
+      message: "error",
       error,
     });
   }
@@ -56,24 +55,23 @@ exports.createProject = async (req, res, next) => {
 // get project by id
 exports.getProjectById = async (req, res, next) => {
   try {
-    // console.log(req.ip)
     const { id } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       // If the provided id is not a valid ObjectId, return a 400 Bad Request response
-      return res.status(400).json({ error: "Invalid ObjectId" });
+      return res.status(400).json({ message: "Invalid ObjectId" });
     }
 
     const result = await getProjectByIdService(id);
 
     res.status(200).json({
-      status: "Success",
+      message: "success",
       data: result,
     });
   } catch (error) {
-    console.log(error);
+    
     res.status(400).json({
-      status: "Failed",
+      message: "error",
       error,
     });
   }
@@ -84,7 +82,7 @@ exports.updateProject = async (req, res, next) => {
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
       // If the provided id is not a valid ObjectId, return a 400 Bad Request response
-      return res.status(400).json({ error: "Invalid ObjectId" });
+      return res.status(400).json({ message: "Invalid ObjectId" });
     }
     const toUpdateData = {
       description: req.body.description,
@@ -113,13 +111,13 @@ exports.updateProject = async (req, res, next) => {
     const result = await updateProjectService(id, toUpdateData);
 
     res.status(200).json({
-      status: "Success",
+      message: "success",
       data: result,
     });
   } catch (error) {
-    console.log(error);
+    
     res.status(400).json({
-      status: "Failed",
+      message: "error",
       error,
     });
   }
@@ -130,7 +128,7 @@ exports.deleteProject = async (req, res, next) => {
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
       // If the provided id is not a valid ObjectId, return a 400 Bad Request response
-      return res.status(400).json({ error: "Invalid ObjectId" });
+      return res.status(400).json({ message: "Invalid ObjectId" });
     }
 
     const project = await getProjectByIdService(id);
@@ -144,13 +142,42 @@ exports.deleteProject = async (req, res, next) => {
     const result = await deleteProjectService(id);
 
     res.status(200).json({
-      status: "Success",
+      message: "success",
       data: result,
     });
   } catch (error) {
-    console.log(error);
+    
     res.status(400).json({
-      status: "Failed",
+      message: "error",
+      error,
+    });
+  }
+};
+// delete project file 
+exports.deleteProjectFile = async (req, res, next) => {
+  try {
+    const {projectId,filename} = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(projectId)) {
+      return res.status(400).json({ message: "Invalid ObjectId" });
+    }
+
+    deleteFile(`public/uploads/projects/${filename}`);
+   
+    const project = await getProjectByIdService(projectId);
+    
+    const remainingFiles = project?.galleryImages?.filter((file) => file.filename !== filename);
+    const result = await updateProjectService(projectId,{galleryImages: remainingFiles});
+    
+
+    res.status(200).json({
+      message: "success",
+      data: result,
+    });
+  } catch (error) {
+    
+    res.status(400).json({
+      message: "error",
       error,
     });
   }

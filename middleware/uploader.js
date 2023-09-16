@@ -2,18 +2,22 @@ const multer = require("multer");
 const path = require("path");
 
 const storage = multer.diskStorage({
-  destination:(req, file, cb)=>{
-   
-    if (file.fieldname === 'featuredImage') {
-      cb(null, 'public/uploads/projects');
+  destination: (req, file, cb) => {
+    if (file.fieldname === "featuredImage") {
+      cb(null, "public/uploads/projects");
+    } else if (file.fieldname === "galleryImages") {
+      cb(null, "public/uploads/projects");
+    } else if (file.fieldname === "teamProfile") {
+      cb(null, "public/uploads/team");
+    } else if (file.fieldname === "pressPhoto") {
+      cb(null, "public/uploads/press");
+    } else if(file.fieldname === 'adminprofile'){
+      cb(null, "public/uploads/profile");
     }
-     else if (file.fieldname === 'galleryImages') {
-      cb(null, 'public/uploads/projects');
+    else {
+      cb(null, "public/uploads");
     }
-    else{
-      cb(null, 'public/uploads');
-    } 
-  }, 
+  },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
     cb(null, uniqueSuffix + "-" + file.originalname);

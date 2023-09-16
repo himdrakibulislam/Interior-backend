@@ -3,16 +3,29 @@ const projectController = require("../controllers/project.controller");
 const uploader = require("../middleware/uploader");
 const router = express.Router();
 
-
 router.route("/projects").get(projectController.getProjects);
 
-router.post("/create",uploader.fields([{ name: 'featuredImage', maxCount: 1 }, { name: 'galleryImages', maxCount: 8 }]),projectController.createProject);
-router.get("/:id",projectController.getProjectById);
+router
+  .route("/:id")
+  .get(projectController.getProjectById)
+  .delete(projectController.deleteProject)
+  .put(
+    uploader.fields([
+      { name: "featuredImage", maxCount: 1 },
+      { name: "galleryImages", maxCount: 8 },
+    ]),
+    projectController.updateProject
+  );
 
-router.delete("/delete/:id",projectController.deleteProject); 
-router.put("/update/:id",uploader.fields([{ name: 'featuredImage', maxCount: 1 }, { name: 'galleryImages', maxCount: 8 }]),projectController.updateProject); 
-// router
-//      .route("/:id")
-//      .patch(productController.updateProduct)
-//      .delete(productController.deleteProductById);
+router.post(
+  "/create",
+  uploader.fields([
+    { name: "featuredImage", maxCount: 1 },
+    { name: "galleryImages", maxCount: 8 },
+  ]),
+  projectController.createProject
+);
+
+router.post("/delete-project-file", projectController.deleteProjectFile);
+
 module.exports = router;

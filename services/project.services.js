@@ -1,7 +1,7 @@
 const Project = require("../modles/project");
 
 exports.getProjectsServices = async() =>{
-    const projects = await Project.find({});
+    const projects = await Project.find({}).sort({ _id: -1 });
     return projects;
 }
 exports.createProjectService = async(project) =>{

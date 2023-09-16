@@ -3,7 +3,6 @@ const Mongoose = require("mongoose");
 const AdminSchema = new Mongoose.Schema({
   username: {
     type: String,
-    unique: true,
     required: true,
   },
   email: {
@@ -11,8 +10,11 @@ const AdminSchema = new Mongoose.Schema({
     validate: [validator.isEmail, "Provide valid e-mail"],
     trim: true,
     lowercase: true,
-    unique: true,
+    unique: [true,"Email already exists!"],
     required: [true, "E-mail address is required"],
+  },
+  adminprofile: {
+    type:Object
   },
   password: {
     type: String,
