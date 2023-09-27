@@ -1,6 +1,6 @@
 const Press = require("../modles/press");
 exports.getAllPressService = async() => {
-    return await Press.find({});
+    return await Press.find({}).sort({ _id: -1 });;
     
 }
 exports.createPressService = async(data) => {

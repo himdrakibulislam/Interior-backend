@@ -8,6 +8,8 @@ const projectRoute = require("./routes/project.route");
 const teamRoute = require("./routes/team.route");
 const pressRoute = require("./routes/press.route");
 const contactRoute = require("./routes/contact.route");
+const dashboardRoute = require("./routes/dashboard.route");
+const frontRoute = require("./routes/front.route");
 const { adminAuth } = require("./middleware/auth");
 // middlewares
 app.use(express.json());
@@ -21,9 +23,15 @@ app.get("/", (req, res) => {
   res.send("Welcome to server!");
 });
 app.use("/api/v1/auth",adminRoute);
+app.use("/api/v1/dashboard",adminAuth,dashboardRoute);
 app.use("/api/v1/contact",contactRoute);
-app.use("/api/v1/project",adminAuth,projectRoute);
-app.use("/api/v1/team",adminAuth,teamRoute);
-app.use("/api/v1/press",adminAuth,pressRoute);
+app.use("/api/v1/project",projectRoute);
+app.use("/api/v1/team",teamRoute);
+app.use("/api/v1/press",pressRoute);
+
+// front 
+// app.use("/api/v1/",frontRoute);
+
+
 
 module.exports = app;

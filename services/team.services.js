@@ -1,6 +1,6 @@
 const Team = require("../modles/team");
 exports.getAllTeamService = async() => {
-    return await Team.find({});
+    return await Team.find({}).sort({ _id: -1 });;
     
 }
 exports.createTeamService = async(team) => {

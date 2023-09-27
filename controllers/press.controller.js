@@ -3,6 +3,7 @@ const {
   } = require("../services/press.services");
   const mongoose = require("mongoose");
   const { deleteFile } = require("../utils/deleteFile");
+const { getAdminService } = require("../services/admin.services");
   
   // get all team
   exports.getPress = async (req, res, next) => {
@@ -24,8 +25,14 @@ const {
   //   create
   exports.createPress = async (req, res, next) => {
     try {
-      const { title, articleURL   } = req.body;
-      const press = { title,articleURL, pressPhoto: req.file };
+      const { title, article  } = req.body;
+      // author info 
+      const auth = req.decodedToken;
+      const {username,email,adminprofile} = await getAdminService(auth.id);
+      const author = {username,email,adminprofile};
+      // add blog 
+      const press = { title,article, pressPhoto: req.file,author: author };
+
       const result = await createPressService(press);
   
       res.status(200).json({
@@ -79,8 +86,8 @@ const {
         deleteFile(`public/uploads/press/${press.pressPhoto.filename}`);
       }
   
-      const { title, articleURL } = req.body;
-      const updatePress = { title, articleURL };
+      const { title, article } = req.body;
+      const updatePress = { title, article };
       if (req.file) {
         updatePress["pressPhoto"] = req.file;
       }
@@ -118,7 +125,7 @@ const {
         data: result,
       });
     } catch (error) {
-      console.log(error);
+      
       res.status(400).json({
         message: "error",
         error,

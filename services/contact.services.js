@@ -1,6 +1,6 @@
 const Contact = require('../modles/contact');
 exports.getAllContactServices = async () => {
-    const result = await Contact.find({});
+    const result = await Contact.find({}).sort({ _id: -1 });;
     return result; 
 } 
 exports.createContactService = async (data) => {

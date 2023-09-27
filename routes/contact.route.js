@@ -3,7 +3,6 @@ const contactController = require("../controllers/contact.controller");
 const { adminAuth } = require("../middleware/auth");
 const router = express.Router();
 
-
 router.route("/").get(adminAuth,contactController.getAllContact);
 router.post(
   "/create",
@@ -12,7 +11,6 @@ router.post(
 
 router
   .route("/:id")
-  .delete(contactController.deleteContact)
-  
+  .delete(adminAuth,contactController.deleteContact)
 
 module.exports = router;
