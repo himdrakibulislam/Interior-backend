@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const jwtSecret = process.env.JSONWEBTOKEN_SECRATE;
 exports.adminAuth = (req, res, next) => {
     const token = req?.headers?.authorization?.split('Bearer ')[1];
-    if (token) {
+    if (token) { 
       jwt.verify(token, jwtSecret, (err, decodedToken) => {
         if (err) {
           return res.status(401).json({ message: "Not authorized" })

@@ -25,6 +25,9 @@ exports.login = async (req, res, next) => {
 
     const admin = await loginAdmin(email);
     if (!admin) {
+      // req.ip
+      // req.headers['user-agent']
+
       res.status(400).json({
         message: "Invalid Information!",
       });

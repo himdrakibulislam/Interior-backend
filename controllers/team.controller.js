@@ -1,5 +1,4 @@
 const {
-  getAllTeamService,
   createTeamService,
   findByIdTeamService,
   deteleTeamService,
@@ -7,14 +6,23 @@ const {
 } = require("../services/team.services");
 const mongoose = require("mongoose");
 const { deleteFile } = require("../utils/deleteFile");
+const Team = require("../modles/team");
 
 // get all team
 exports.getTeam = async (req, res, next) => {
+  const page = req.query.page || 1;
+  const perPage = req.query.limit || 10; 
+  const skip = (page - 1) * perPage; 
   try {
-    const team = await getAllTeamService();
-
+    const total = await Team.countDocuments();
+    const team = await Team.find({})
+    .skip(skip)
+    .limit(parseInt(perPage))
+    .sort({ _id: -1 });
+    
     res.status(200).json({
       message: "success",
+      total,
       data: team,
     });
   } catch (error) {

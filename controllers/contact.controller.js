@@ -1,18 +1,27 @@
 const mongoose = require("mongoose");
 const {
-  getAllContactServices,
   createContactService,
   deteleClientService,
 } = require("../services/contact.services");
-const {getAllAdminsService} = require('../services/admin.services');
+const { getAllAdminsService } = require("../services/admin.services");
 const { mailTransport } = require("../utils/NodeMailer");
+const Contact = require("../modles/contact");
 // get all team
 exports.getAllContact = async (req, res, next) => {
+  const page = req.query.page || 1;
+  const perPage = req.query.limit || 10;
+  const skip = (page - 1) * perPage;
   try {
-    const contacts = await getAllContactServices();
+    const total = await Contact.countDocuments();
+    const result = await Contact.find({})
+      .skip(skip)
+      .limit(parseInt(perPage))
+      .sort({ _id: -1 });
+
     res.status(200).json({
       message: "success",
-      data: contacts,
+      total,
+      data: result,
     });
   } catch (error) {
     res.status(400).json({
@@ -66,7 +75,7 @@ exports.createContact = async (req, res, next) => {
       estimateTime,
     });
     const admins = await getAllAdminsService();
-    admins.forEach(admin => {
+    admins.forEach((admin) => {
       const mail = mailTransport.sendMail({
         from: email, // sender address
         to: admin.email, // list of receivers
@@ -74,10 +83,8 @@ exports.createContact = async (req, res, next) => {
         text: "you have got a new contact", // plain text body
         html: `<b>you have got a new contact ${email}</b>`, // html body
       });
-      
     });
-   
-  
+
     res.status(200).json({
       message: "success",
       data: contact,
