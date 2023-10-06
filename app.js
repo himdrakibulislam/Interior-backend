@@ -11,6 +11,7 @@ const contactRoute = require("./routes/contact.route");
 const dashboardRoute = require("./routes/dashboard.route");
 const frontRoute = require("./routes/front.route");
 const { adminAuth } = require("./middleware/auth");
+
 // middlewares
 app.use(express.json());
 app.use(cors());
@@ -18,9 +19,8 @@ app.use(express.static('public'));
 app.use(cookieParser());
 //routes 
 
-app.get("/", (req, res) => {
-  
-  res.send("Welcome to server!");
+app.get("/", async (req, res) => {
+  res.send("Welcome!");
 });
 app.use("/api/v1/auth",adminRoute);
 app.use("/api/v1/dashboard",adminAuth,dashboardRoute);
