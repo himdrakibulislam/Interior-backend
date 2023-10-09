@@ -7,6 +7,7 @@ const {
 const mongoose = require("mongoose");
 const { deleteFile } = require("../utils/deleteFile");
 const Project = require("../modles/project");
+const ViewCount = require("../modles/ViewCount");
 
 exports.getProjects = async (req, res, next) => {
   const page = req.query.page || 1;
@@ -69,11 +70,25 @@ exports.getProjectById = async (req, res, next) => {
       return res.status(400).json({ message: "Invalid ObjectId" });
     }
 
-    const result = await getProjectByIdService(id);
+    const existingView = await ViewCount.findOne({
+      contentId: id,
+      ipAddress: req.ip,
+    });
 
+    if (!existingView) {
+      // Record the view
+      const newView = new ViewCount({ contentId: id, ipAddress: req.ip });
+      await newView.save();
+    }
+
+    const result = await getProjectByIdService(id);
+    const views = await ViewCount.findOne({
+      contentId: id
+    }).countDocuments();
+   
     res.status(200).json({
       message: "success",
-      data: result,
+      data: {project:result,views}
     });
   } catch (error) {
     res.status(400).json({

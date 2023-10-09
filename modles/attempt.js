@@ -7,7 +7,7 @@ const AttemptSchema = new Mongoose.Schema(
       required: true,
     },
     attempt: {
-      type: String,
+      type: Number,
       required: true,
     },
     device: {

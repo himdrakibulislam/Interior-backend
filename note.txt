@@ -1,22 +1,3 @@
- // "type": "module" is for use ES6 in server 
 
-
- create random number 
- function getRandomInt(max) {
-      return Math.floor(Math.random() * Math.floor(max));
-    };
-
-
-{
-  fieldname: 'image',
-  originalname: 'rakibulislam.jpg',
-  encoding: '7bit',
-  mimetype: 'image/jpeg',
-  destination: 'public/uploads/',
-  filename: '1694167461226-517027079-rakibulislam.jpg',
-  path: 'public\\uploads\\1694167461226-517027079-rakibulislam.jpg',
-  size: 1752919
-}
-
-
-33TTjj66kdhjh
+find user data by ip
+https://ipinfo.io/58.145.188.229/json

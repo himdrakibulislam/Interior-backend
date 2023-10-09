@@ -1,4 +1,3 @@
-const validator = require("validator");
 const Mongoose = require("mongoose");
 
 const PressSchema = new Mongoose.Schema({

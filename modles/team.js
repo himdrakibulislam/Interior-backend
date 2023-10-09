@@ -10,7 +10,9 @@ const TeamSchema = new Mongoose.Schema({
     type: Object,
     required: true,
   },
-
+  bio : {
+    type : String
+  },
   designation: {
     type: String,
     required: true,

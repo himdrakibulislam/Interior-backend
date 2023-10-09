@@ -13,11 +13,11 @@ const frontRoute = require("./routes/front.route");
 const { adminAuth } = require("./middleware/auth");
 
 // middlewares
-app.use(express.json());
-app.use(cors());
+app.use(express.json()); 
+app.use(cors());    
 app.use(express.static('public'));
-app.use(cookieParser());
-//routes 
+app.use(cookieParser());  
+//routes     
 
 app.get("/", async (req, res) => {
   res.send("Welcome!");

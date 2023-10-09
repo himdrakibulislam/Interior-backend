@@ -36,8 +36,8 @@ exports.getTeam = async (req, res, next) => {
 //   create
 exports.createTeam = async (req, res, next) => {
   try {
-    const { name, designation } = req.body;
-    const designer = { name, designation, teamProfile: req.file };
+    const { name, designation, bio} = req.body;
+    const designer = { name, designation,bio, teamProfile: req.file };
     const team = await createTeamService(designer);
 
     res.status(200).json({
@@ -91,8 +91,8 @@ exports.updateTeam = async (req, res, next) => {
       deleteFile(`public/uploads/team/${team.teamProfile.filename}`);
     }
 
-    const { name, designation } = req.body;
-    const updateDesigner = { name, designation };
+    const { name, designation,bio } = req.body;
+    const updateDesigner = { name, designation,bio };
     if (req.file) {
       updateDesigner["teamProfile"] = req.file;
     }

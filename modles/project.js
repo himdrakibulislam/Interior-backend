@@ -22,7 +22,7 @@ const projectSchema = mongoose.Schema({
   },
   galleryImages:{
     type:Array,
-  },
+  }
 });
 // mongoose middleware
 // pre

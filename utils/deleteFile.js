@@ -13,5 +13,5 @@ exports.deleteFile = (destination) => {
       return res.status(400).json({ error: "File does not exists!" });
     }
   });
-    
+     
 }

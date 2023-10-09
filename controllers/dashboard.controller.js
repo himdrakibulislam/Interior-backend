@@ -5,6 +5,7 @@ const {
 const Project = require("../modles/project");
 const Team = require("../modles/team");
 const Press = require("../modles/press");
+const ViewCount = require("../modles/ViewCount");
 
 exports.dashboard = async (req, res, next) => {
   try {
@@ -13,6 +14,7 @@ exports.dashboard = async (req, res, next) => {
     const projects = await Project.estimatedDocumentCount();
     const team = await Team.estimatedDocumentCount();
     const press = await Press.estimatedDocumentCount();
+    const views = await ViewCount.countDocuments();
     res.status(200).json({
       message: "success",
       data: {
@@ -22,6 +24,7 @@ exports.dashboard = async (req, res, next) => {
           projects: projects,
           members: team,
           press: press,
+          views
         },
       },
     });

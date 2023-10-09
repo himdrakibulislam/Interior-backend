@@ -8,7 +8,11 @@ const mongoose = require("mongoose");
 const { deleteFile } = require("../utils/deleteFile");
 const { getAdminService } = require("../services/admin.services");
 const Press = require("../modles/press");
-
+const Joi = require("joi");
+const schema = Joi.object({
+  title: Joi.string().min(3).max(100).required(),
+  article: Joi.required(),
+});
 // get all team
 exports.getPress = async (req, res, next) => {
   const page = req.query.page || 1;
@@ -37,6 +41,10 @@ exports.getPress = async (req, res, next) => {
 //   create
 exports.createPress = async (req, res, next) => {
   try {
+    const { error } = schema.validate(req.body);
+    if (error) {
+      return res.status(400).json({ error: error.details[0].message });
+    }
     const { title, article } = req.body;
     // author info
     const auth = req.decodedToken;
@@ -52,7 +60,6 @@ exports.createPress = async (req, res, next) => {
       data: result,
     });
   } catch (error) {
-    console.log(error);
     res.status(400).json({
       message: "error",
       error,
