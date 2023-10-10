@@ -80,8 +80,53 @@ exports.createContact = async (req, res, next) => {
         from: email, // sender address
         to: admin.email, // list of receivers
         subject: "Contact", // Subject line
-        text: "you have got a new contact", // plain text body
-        html: `<b>you have got a new contact ${email}</b>`, // html body
+        text: `Contact information has arrived from ${name}.`, // plain text body
+        html: `<div style="padding: 8px; ">
+        <table >
+          <thead>
+            <tr>
+              <th style="border-style: solid;">Name</th>
+              <th style="border-style: solid;">
+                ${name}
+              </th>
+            </tr>
+            <tr>
+              <th style="border-style: solid;">Email</th>
+              <th style="border-style: solid;">
+                ${email}
+              </th>
+            </tr>
+            <tr>
+              <th style="border-style: solid;">Budget</th>
+              <th style="border-style: solid;">
+                <span className="font-bold"> &#2547;</span>
+                <span className="font-semi-bold">${budget}</span> K
+              </th>
+            </tr>
+            <tr>
+              <th style="border-style: solid;">Service</th>
+              <th style="border-style: solid;">
+                
+                <span className="font-semi-bold uppercase">
+                  ${serviceType}
+                </span>
+              </th>
+            </tr>
+            <tr>
+              <th style="border-style: solid;">Est. Time</th>
+              <th style="border-style: solid;">
+               
+                <span className="font-semi-bold uppercase">
+                  ${estimateTime} Days 
+                </span>
+              </th>
+            </tr>
+          </thead>
+        </table>
+        <h3 className="text-gray-400">Description</h3>
+        <p style="text-align: justify;">${description}</p>
+      </div>;
+      `, // html body
       });
     });
 
