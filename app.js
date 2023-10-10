@@ -30,7 +30,7 @@ app.use("/api/v1/team",teamRoute);
 app.use("/api/v1/press",pressRoute);
 
 // front 
-// app.use("/api/v1/",frontRoute);
+// app.use("/api/v1/",frontRoute); 
 
 
 

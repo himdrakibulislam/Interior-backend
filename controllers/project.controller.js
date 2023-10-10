@@ -70,22 +70,27 @@ exports.getProjectById = async (req, res, next) => {
       return res.status(400).json({ message: "Invalid ObjectId" });
     }
 
-    const existingView = await ViewCount.findOne({
-      contentId: id,
-      ipAddress: req.ip,
-    });
-
-    if (!existingView) {
-      // Record the view
-      const newView = new ViewCount({ contentId: id, ipAddress: req.ip });
-      await newView.save();
-    }
 
     const result = await getProjectByIdService(id);
+    // views 
+    
+    if(result){
+      const existingView = await ViewCount.findOne({
+        contentId: id,
+        ipAddress: req.ip,
+      });
+  
+      if (!existingView) {
+        // Record the view
+        const newView = new ViewCount({ contentId: id, ipAddress: req.ip });
+        await newView.save();
+      }
+    }
+
     const views = await ViewCount.findOne({
       contentId: id
     }).countDocuments();
-   
+
     res.status(200).json({
       message: "success",
       data: {project:result,views}
@@ -160,6 +165,8 @@ exports.deleteProject = async (req, res, next) => {
       deleteFile(`public/uploads/projects/${image.filename}`);
     });
     const result = await deleteProjectService(id);
+    // remove views ;
+    await ViewCount.deleteMany({contentId : id});
 
     res.status(200).json({
       message: "success",
